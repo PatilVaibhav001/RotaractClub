@@ -1,6 +1,8 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
+import Testimonials from '../components/Testimonials';
+import Newsletter from '../components/Newsletter';
 import Footer from '../components/Footer';
 
 const Landing = () => {
@@ -9,6 +11,8 @@ const Landing = () => {
       <Navbar />
       <main className="flex-grow">
         <Hero />
+        <Testimonials />
+        <Newsletter />
       </main>
       <Footer />
     </div>
