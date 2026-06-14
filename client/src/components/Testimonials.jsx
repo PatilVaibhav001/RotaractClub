@@ -4,8 +4,8 @@ const Testimonials = () => {
     const testimonials = [
         { id: 1, text: "If you're using Tailwind CSS, PrebuiltUI is a must have. It dramatically speeds up development while keeping the UI clean and modern.", name: "Alex Morgan", role: "Founder - Lumens", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200"},
         { id: 2, text: "PrebuiltUI has completely changed how I build interfaces. Most recommended components and templates.", name: "Sarah Collins", role: "Tech Lead - You Inc.", image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200" },
-        { id: 3, text: "Rotaract gave me opportunities to connect with passionate individuals, lead initiatives, and contribute to causes that truly matter. Every project has been a learning experience.", name: "Rahul Patil", role: "Rotract GSMCOE", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200" },
-        { id: 4, text: "PrebuiltUI allows me to focus on building features instead of writing CSS. Everything looks premium right out of the box.", name: "Ryan Collins", role: "Co-founder - Unique", image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200" }
+        { id: 3, text: "Rotaract gave me opportunities to connect with passionate individuals, lead initiatives, and contribute to causes that truly matter. Every project has been a learning experience.", name: "Rahul Patil", role: "Rotaract GSMCOE", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200" },
+        { id: 4, text: "The friendships, mentorship, and service opportunities I found through Rotaract have been life-changing. It is more than a club—it is a platform for creating positive change.", name: "Vaibhav Patil", role: "Rotaract PICT", image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200" }
     ];
 
     return (
