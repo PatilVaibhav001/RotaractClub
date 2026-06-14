@@ -12,9 +12,9 @@ const Testimonials = () => {
     },
     {
       id: 2,
-      text: "PrebuiltUI has completely changed how I build interfaces. Most recommended components and templates.",
-      name: "Sarah Collins",
-      role: "Tech Lead - You Inc.",
+      text: "The RCPH hackathon was an experience I didn't expect from a Rotaract club. Real problem statements, great mentorship, and an energy that kept us going all night. Easily the best event I've attended this year.",
+      name: "Nikhil Ahire",
+      role: "Rotaract GSMCOE",
       image:
         "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
     },
