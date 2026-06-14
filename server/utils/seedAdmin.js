@@ -7,9 +7,11 @@ const seedAdmin = async () => {
 
     if (!adminExists) {
       await User.create({
+        name: 'Admin',
         email: adminEmail,
         password: process.env.ADMIN_PASSWORD || 'admin123',
         role: 'Admin',
+        status: 'Approved',
       });
       console.log('Main Admin User seeded successfully');
     }

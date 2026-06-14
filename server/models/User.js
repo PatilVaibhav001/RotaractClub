@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema(
       enum: ['Admin', 'Member'],
       default: 'Member',
     },
+    status: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Rejected'],
+      default: 'Pending',
+    },
   },
   { timestamps: true }
 );

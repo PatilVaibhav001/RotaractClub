@@ -12,6 +12,7 @@ const Login = () => {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [club, setClub] = useState('');
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -21,6 +22,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     setIsLoading(true);
 
     try {
@@ -38,11 +40,16 @@ const Login = () => {
 
       const { data } = await axios.post(url, payload, config);
 
-      login(data);
-      if (data.role === 'Admin') {
-        navigate('/dashboard');
+      if (isLogin) {
+        login(data);
+        if (data.role === 'Admin') {
+          navigate('/dashboard');
+        } else {
+          navigate('/');
+        }
       } else {
-        navigate('/'); // Redirect to landing page for regular members
+        setSuccessMsg(data.message || 'Registration successful! Pending admin approval.');
+        setIsLogin(true);
       }
     } catch (err) {
       setError(
@@ -66,12 +73,18 @@ const Login = () => {
       </button>
 
       <form onSubmit={handleSubmit} className="max-w-96 w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white shadow-sm">
-        <h1 className="text-gray-900 text-3xl mt-10 font-medium">{isLogin ? 'Login' : 'Register'}</h1>
-        <p className="text-gray-500 text-sm mt-2">{isLogin ? 'Please sign in to continue' : 'Become a member'}</p>
+        <h1 className="text-gray-900 text-3xl mt-10 font-medium">{isLogin ? 'Login' : 'Sign up'}</h1>
+        <p className="text-gray-500 text-sm mt-2 mb-8">{isLogin ? 'Please sign in to continue' : 'Become a member'}</p>
         
         {error && (
           <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-xs font-medium text-left">
             {error}
+          </div>
+        )}
+
+        {successMsg && (
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-600 text-xs font-medium text-left">
+            {successMsg}
           </div>
         )}
 

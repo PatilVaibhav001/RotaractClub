@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Notification = require('../models/Notification');
 const jwt = require('jsonwebtoken');
 
 // Generate JWT
@@ -18,6 +19,9 @@ const authUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      if (user.status === 'Pending') {
+        return res.status(403).json({ message: 'Your account is pending verification by an admin.' });
+      }
       res.json({
         _id: user._id,
         email: user.email,
@@ -50,15 +54,24 @@ const registerUser = async (req, res) => {
       email,
       password,
       dateOfBirth,
-      club
+      club,
+      status: 'Pending'
     });
 
     if (user) {
+      const notification = await Notification.create({
+        title: 'New Member Registration',
+        message: `${name || email} has requested to join.`,
+        userId: user._id
+      });
+
+      if (req.io) {
+        req.io.emit('newNotification', notification);
+      }
+
       res.status(201).json({
-        _id: user._id,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id),
+        message: 'Registration successful. Please wait for admin approval.',
+        status: 'Pending'
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
