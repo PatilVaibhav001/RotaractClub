@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Bell, Check } from 'lucide-react';
+import { Bell, Check, X } from 'lucide-react';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import { AuthContext } from '../context/AuthContext';
@@ -50,12 +50,28 @@ const NotificationBell = () => {
         headers: { Authorization: `Bearer ${user?.token || localStorage.getItem('token')}` }
       });
       
-      // Update local state
-      setNotifications((prev) =>
-        prev.map((n) => (n._id === notificationId ? { ...n, isRead: true } : n))
-      );
+      // Update local state by removing the notification
+      setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
     } catch (error) {
       console.error('Error approving user:', error);
+    }
+  };
+
+  const handleReject = async (userId, notificationId) => {
+    try {
+      // Reject user
+      await axios.put(`http://localhost:5000/api/notifications/users/${userId}/reject`, {}, {
+        headers: { Authorization: `Bearer ${user?.token || localStorage.getItem('token')}` }
+      });
+      // Mark as read
+      await axios.put(`http://localhost:5000/api/notifications/${notificationId}/read`, {}, {
+        headers: { Authorization: `Bearer ${user?.token || localStorage.getItem('token')}` }
+      });
+      
+      // Update local state by removing the notification
+      setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
+    } catch (error) {
+      console.error('Error rejecting user:', error);
     }
   };
 
@@ -87,8 +103,12 @@ const NotificationBell = () => {
           
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="p-6 text-center text-slate-500 text-sm">
-                No notifications yet.
+              <div className="p-8 text-center flex flex-col items-center justify-center">
+                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-blue-400 mb-3 border border-blue-100">
+                  <Bell size={26} strokeWidth={1.5} />
+                </div>
+                <h4 className="text-slate-800 font-bold text-sm mb-1">You're all caught up!</h4>
+                <p className="text-slate-500 text-xs px-4 leading-relaxed">No pending requests or alerts. Enjoy the silence!</p>
               </div>
             ) : (
               notifications.map((notification) => (
@@ -110,6 +130,12 @@ const NotificationBell = () => {
                             className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md font-medium transition-colors flex items-center gap-1"
                           >
                             <Check size={14} /> Approve
+                          </button>
+                          <button 
+                            onClick={() => handleReject(notification.userId, notification._id)}
+                            className="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md font-medium transition-colors flex items-center gap-1"
+                          >
+                            <X size={14} /> Reject
                           </button>
                         </div>
                       )}

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { LayoutDashboard, FileText, Users, LogOut, Building, UserCircle } from 'lucide-react';
+import { LayoutDashboard, FileText, Users, LogOut, Building, UserCircle, FilePlus } from 'lucide-react';
 import logo from '../assets/rotaractlogo.png';
 import NotificationBell from '../components/NotificationBell';
 
@@ -15,18 +15,17 @@ const DashboardLayout = () => {
     return <Navigate to="/login" replace />;
   }
 
-  // Double check admin role for accessing dashboard
-  if (user.role !== 'Admin') {
-    return <Navigate to="/" replace />;
+  if (location.pathname === '/dashboard' && user.role !== 'Admin') {
+    return <Navigate to="/dashboard/reports" replace />;
   }
 
   const navItems = [
-    { name: 'Analytics', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Event Reports', path: '/dashboard/reports', icon: FileText },
-    { name: 'Clubs', path: '/dashboard/clubs', icon: Building },
-    { name: 'Members', path: '/dashboard/members', icon: UserCircle },
-    { name: 'Users', path: '/dashboard/users', icon: Users },
-  ];
+    { name: 'Analytics', path: '/dashboard', icon: LayoutDashboard, roles: ['Admin'] },
+    { name: 'Events', path: '/dashboard/reports', icon: FileText, roles: ['Admin', 'Adminmember', 'Member'] },
+    { name: 'Add Event', path: '/dashboard/add-event', icon: FilePlus, roles: ['Admin', 'Adminmember'] },
+    { name: 'Clubs', path: '/dashboard/clubs', icon: Building, roles: ['Admin'] },
+    { name: 'Members', path: '/dashboard/users', icon: Users, roles: ['Admin'] },
+  ].filter(item => item.roles.includes(user.role));
 
   return (
     <div className="flex flex-col h-screen bg-slate-50 text-slate-900">
@@ -36,9 +35,9 @@ const DashboardLayout = () => {
           <img src={logo} alt="Rotaract Logo" className="h-10 w-auto" />
         </Link>
         <div className="flex items-center gap-6">
-          <NotificationBell />
+          {user?.role === 'Admin' && <NotificationBell />}
           <div className="text-slate-700 font-medium text-lg">
-            Welcome, {user?.name || 'Admin'}
+            Welcome, {user?.name || 'Member'}
           </div>
         </div>
       </header>
@@ -48,10 +47,14 @@ const DashboardLayout = () => {
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r border-slate-200 flex flex-col transition-all shadow-sm z-10 overflow-y-auto">
           <div className="py-8 flex flex-col items-center border-b border-slate-100">
-             <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-3">
-               <UserCircle size={32} />
-             </div>
-             <h2 className="text-sm font-semibold text-slate-800">{user?.name || 'Admin'}</h2>
+             <Link to="/dashboard/profile" className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-3 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer group overflow-hidden border border-slate-200">
+               {user?.profilePicture ? (
+                 <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+               ) : (
+                 <UserCircle size={32} className="group-hover:scale-110 transition-transform" />
+               )}
+             </Link>
+             <h2 className="text-sm font-semibold text-slate-800">{user?.name || 'Member'}</h2>
           </div>
 
           <div className="flex-1 py-6 flex flex-col gap-2 px-3">

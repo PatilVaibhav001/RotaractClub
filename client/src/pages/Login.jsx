@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
@@ -15,9 +15,22 @@ const Login = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [clubsList, setClubsList] = useState([]);
   
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:5000/api/clubs');
+        setClubsList(data);
+      } catch (error) {
+        console.error('Failed to fetch clubs', error);
+      }
+    };
+    fetchClubs();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -156,14 +169,13 @@ const Login = () => {
                 <select 
                   value={club}
                   onChange={(e) => setClub(e.target.value)}
-                  className={`bg-transparent outline-none text-sm w-full h-full appearance-none ${club ? 'text-gray-700' : 'text-gray-500'}`}
+                  className="w-full bg-transparent outline-none h-full text-sm text-gray-900 appearance-none"
                   required 
                 >
                   <option value="" disabled>Select a club name to join</option>
-                  <option value="Rotaract Club Pune Heritage">Rotaract Club Pune Heritage</option>
-                  <option value="Rotaract Club of Pune">Rotaract Club of Pune</option>
-                  <option value="Rotaract Club of Mumbai">Rotaract Club of Mumbai</option>
-                  <option value="Rotaract Club of Delhi">Rotaract Club of Delhi</option>
+                  {clubsList.map((c) => (
+                    <option key={c._id} value={c.name}>{c.name}</option>
+                  ))}
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
                    <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>

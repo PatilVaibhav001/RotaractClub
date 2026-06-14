@@ -7,6 +7,9 @@ const connectDB = require('./config/db');
 const seedAdmin = require('./utils/seedAdmin');
 const authRoutes = require('./routes/authRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const userRoutes = require('./routes/userRoutes');
+const clubRoutes = require('./routes/clubRoutes');
+const eventRoutes = require('./routes/eventRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -39,6 +42,9 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/clubs', clubRoutes);
+app.use('/api/events', eventRoutes);
 
 // Basic Route for testing
 app.get('/', (req, res) => {

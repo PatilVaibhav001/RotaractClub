@@ -34,11 +34,9 @@ const Navbar = () => {
           </Link>
         ) : (
           <>
-            {user.role === 'Admin' && (
-              <Link to="/dashboard" className="flex items-center justify-center bg-white text-gray-600 border border-gray-300 text-sm hover:bg-gray-50 active:scale-95 transition-all w-32 h-11 rounded-full">
-                Dashboard
-              </Link>
-            )}
+            <Link to="/dashboard" className="flex items-center justify-center bg-white text-gray-600 border border-gray-300 text-sm hover:bg-gray-50 active:scale-95 transition-all w-32 h-11 rounded-full">
+              Dashboard
+            </Link>
             <button onClick={handleLogout} className="flex items-center justify-center bg-white text-red-600 border border-red-200 text-sm hover:bg-red-50 active:scale-95 transition-all w-32 h-11 rounded-full">
               Logout
             </button>
@@ -73,11 +71,9 @@ const Navbar = () => {
               </Link>
             ) : (
               <>
-                {user.role === 'Admin' && (
-                  <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-center bg-white text-gray-600 border border-gray-300 text-sm hover:bg-gray-50 active:scale-95 transition-all w-full h-11 rounded-full">
-                    Dashboard
-                  </Link>
-                )}
+                <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-center bg-white text-gray-600 border border-gray-300 text-sm hover:bg-gray-50 active:scale-95 transition-all w-full h-11 rounded-full">
+                  Dashboard
+                </Link>
                 <button onClick={handleLogout} className="flex items-center justify-center bg-white text-red-600 border border-red-200 text-sm hover:bg-red-50 active:scale-95 transition-all w-full h-11 rounded-full">
                   Logout
                 </button>

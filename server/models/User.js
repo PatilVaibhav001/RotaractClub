@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['Admin', 'Member'],
+      enum: ['Admin', 'Adminmember', 'Member'],
       default: 'Member',
     },
     status: {
@@ -33,14 +33,18 @@ const userSchema = new mongoose.Schema(
       enum: ['Pending', 'Approved', 'Rejected'],
       default: 'Pending',
     },
+    profilePicture: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );
 
 // Encrypt password before saving
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function () {
   if (!this.isModified('password')) {
-    next();
+    return;
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
