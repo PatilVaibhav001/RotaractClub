@@ -14,6 +14,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    club: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ['Admin', 'Member'],

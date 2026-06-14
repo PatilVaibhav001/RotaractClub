@@ -37,7 +37,7 @@ const authUser = async (req, res) => {
 // @access  Public
 const registerUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password, dateOfBirth, club } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -46,8 +46,11 @@ const registerUser = async (req, res) => {
     }
 
     const user = await User.create({
+      name,
       email,
       password,
+      dateOfBirth,
+      club
     });
 
     if (user) {
